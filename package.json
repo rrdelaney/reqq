@@ -1,0 +1,27 @@
+{
+  "name": "reqq",
+  "version": "0.1.0",
+  "description": "Request library with HAR",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard | snazzy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rrdelaney/reqq"
+  },
+  "author": "Ryan Delaney <rrdelaney@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rrdelaney/reqq/issues"
+  },
+  "homepage": "https://github.com/rrdelaney/reqq",
+  "devDependencies": {
+    "snazzy": "^3.0.0",
+    "standard": "^6.0.8"
+  },
+  "standard": {
+    "globals": ["EventSource", "window", "fetch"],
+    "ignore": ["test/server.js"]
+  }
+}
