@@ -11,9 +11,9 @@ module.exports.createAPI = function createAPI (host) {
         var listener = new EventSource('http://localhost:3333')
         this.HAR.push(listener)
 
-        var restart = () => {
+        var restart = function () {
           listener.onerror = null
-          listener.onmessage = (res) => {
+          listener.onmessage = function (res) {
             listener.onmessage = null
             listener.onerror = restart
             run(res)
@@ -26,29 +26,27 @@ module.exports.createAPI = function createAPI (host) {
     },
 
     get: function (path, cb) {
-      this.reload(`GET ${host}${path}`, () =>
-        fetch(`${host}${path}`)
-          .then((res) => res.json())
-          .then((x) => cb(x))
-      )
+      this.reload(`GET ${host}${path}`, function () {
+        return fetch(`${host}${path}`)
+          .then(function (res) { return res.json() })
+          .then(function (x) { return cb(x) })
+      })
     },
 
     post: function (path, body, cb) {
-      this.reload(`POST ${host}${path}`, () =>
-        fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-          .then((res) => res.json())
-          .then((x) => cb(x))
-      )
+      return fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then(function (res) { return res.json() })
+        .then(function (x) { return cb(x) })
     },
 
     disconnect: function () {
-      this.HAR.forEach((l) => l.close())
+      this.HAR.forEach(function (l) { l.close() })
     }
   }
 }
 
 module.exports.createServer = function createServer () {
-  return require('http').createServer((req, res) => {
+  return require('http').createServer(function (req, res) {
     res.writeHead(200, { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'text/event-stream', 'Content-Length': '15' })
     res.write('data: reload!\n\n')
   }).listen(3333)
