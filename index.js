@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports.createAPI = function createAPI (host) {
   return {
     HAR: [],
@@ -17,7 +15,7 @@ module.exports.createAPI = function createAPI (host) {
             listener.onmessage = null
             listener.onerror = restart
             run(res)
-            console.info(`[HAR] reloading ${name}...`)
+            console.info('[HAR] reloading' + name + '...')
           }
         }
 
@@ -26,8 +24,8 @@ module.exports.createAPI = function createAPI (host) {
     },
 
     get: function (path, cb) {
-      this.reload(`GET ${host}${path}`, function () {
-        return fetch(`${host}${path}`)
+      this.reload('GET ' + host + path, function () {
+        return fetch(host + path)
           .then(function (res) { return res.json() })
           .then(function (x) { return cb(x) })
       })
