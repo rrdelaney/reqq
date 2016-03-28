@@ -4,7 +4,7 @@ module.exports.createAPI = function createAPI (host) {
   return {
     HAR: [],
 
-    reload (name, run) {
+    reload: function (name, run) {
       run()
 
       if (typeof window !== 'undefined') {
@@ -25,7 +25,7 @@ module.exports.createAPI = function createAPI (host) {
       }
     },
 
-    get (path, cb) {
+    get: function (path, cb) {
       this.reload(`GET ${host}${path}`, () =>
         fetch(`${host}${path}`)
           .then((res) => res.json())
@@ -33,7 +33,7 @@ module.exports.createAPI = function createAPI (host) {
       )
     },
 
-    post (path, body, cb) {
+    post: function (path, body, cb) {
       this.reload(`POST ${host}${path}`, () =>
         fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
           .then((res) => res.json())
@@ -41,7 +41,7 @@ module.exports.createAPI = function createAPI (host) {
       )
     },
 
-    disconnect () {
+    disconnect: function () {
       this.HAR.forEach((l) => l.close())
     }
   }
