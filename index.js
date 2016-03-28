@@ -8,10 +8,10 @@ module.exports.createAPI = function createAPI (host) {
       run()
 
       if (typeof window !== 'undefined') {
-        let listener = new EventSource('http://localhost:3333')
+        var listener = new EventSource('http://localhost:3333')
         this.HAR.push(listener)
 
-        let restart = () => {
+        var restart = () => {
           listener.onerror = null
           listener.onmessage = (res) => {
             listener.onmessage = null
