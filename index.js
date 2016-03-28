@@ -5,7 +5,7 @@ module.exports.createAPI = function createAPI (host) {
     reload: function (name, run) {
       run()
 
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
         var listener = new EventSource('http://localhost:3333')
         this.HAR.push(listener)
 
