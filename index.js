@@ -1,10 +1,21 @@
 module.exports.createAPI = function createAPI (host) {
   return {
+    get: function (path) {
+      return fetch(host + path).then(function (res) { return res.json() })
+    },
+
+    post: function (path, body) {
+      return fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then(function (res) { return res.json() })
+    }
+  }
+}
+
+module.exports.HAR = function HAR (cb) {
+  return {
     HAR: [],
 
-    reload: function (name, run) {
-      run()
-
+    reload: function (run) {
       if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
         var listener = new EventSource('http://localhost:3333')
         this.HAR.push(listener)
@@ -15,26 +26,11 @@ module.exports.createAPI = function createAPI (host) {
             listener.onmessage = null
             listener.onerror = restart
             run(res)
-            console.info('[HAR] reloading' + name + '...')
           }
         }
 
         listener.onerror = restart
       }
-    },
-
-    get: function (path, cb) {
-      this.reload('GET ' + host + path, function () {
-        return fetch(host + path)
-          .then(function (res) { return res.json() })
-          .then(function (x) { return cb(x) })
-      })
-    },
-
-    post: function (path, body, cb) {
-      return fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-        .then(function (res) { return res.json() })
-        .then(function (x) { return cb(x) })
     },
 
     disconnect: function () {

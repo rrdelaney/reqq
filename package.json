@@ -1,6 +1,6 @@
 {
   "name": "reqq",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Request library with HAR",
   "main": "index.js",
   "scripts": {
