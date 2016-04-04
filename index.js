@@ -11,31 +11,36 @@ module.exports.createAPI = function createAPI (host) {
   }
 }
 
-module.exports.HAR = function HAR (cb) {
-  return {
-    HAR: [],
+var HAR = module.exports.HAR = {
+  _HAR: [],
 
-    reload: function (run) {
-      if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-        var listener = new EventSource('http://localhost:3333')
-        this.HAR.push(listener)
+  run: function (cb) {
+    cb()
+    HAR.reload(cb)
+  },
 
-        var restart = function () {
-          listener.onerror = null
-          listener.onmessage = function (res) {
-            listener.onmessage = null
-            listener.onerror = restart
-            run(res)
-          }
+  reload: function (run) {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+      var listener = new EventSource('http://localhost:3333')
+      console.log('[HAR] Listening on http://localhost:3333')
+      this._HAR.push(listener)
+
+      var restart = function () {
+        listener.onerror = null
+        listener.onmessage = function (res) {
+          listener.onmessage = null
+          listener.onerror = restart
+          console.log('[HAR] Processing update from http://localhost:3333')
+          run(res)
         }
-
-        listener.onerror = restart
       }
-    },
 
-    disconnect: function () {
-      this.HAR.forEach(function (l) { l.close() })
+      listener.onerror = restart
     }
+  },
+
+  disconnect: function () {
+    this._HAR.forEach(function (l) { l.close() })
   }
 }
 
