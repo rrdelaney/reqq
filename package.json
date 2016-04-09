@@ -1,6 +1,6 @@
 {
   "name": "reqq",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Request library with HAR",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,13 @@
     "standard": "^6.0.8"
   },
   "standard": {
-    "globals": ["EventSource", "window", "fetch"],
-    "ignore": ["test/server.js"]
+    "globals": [
+      "EventSource",
+      "window",
+      "fetch"
+    ],
+    "ignore": [
+      "test/server.js"
+    ]
   }
 }
