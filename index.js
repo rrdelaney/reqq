@@ -5,7 +5,7 @@ module.exports.createAPI = function createAPI (host) {
     },
 
     post: function (path, body) {
-      return fetch(host, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      return fetch(host + path, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then(function (res) { return res.json() })
     }
   }
